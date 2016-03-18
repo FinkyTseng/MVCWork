@@ -1,4 +1,6 @@
+using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace MVCWork.Models
 {
@@ -13,8 +15,25 @@ namespace MVCWork.Models
 
 		public void Commit()
 		{
-			Context.SaveChanges();
-		}
+            try
+            {
+                Context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (DbEntityValidationResult item in ex.EntityValidationErrors)
+                {
+                    foreach (DbValidationError err in item.ValidationErrors)
+                    {
+                        throw new Exception(err.PropertyName + "驗證失敗：" + err.ErrorMessage);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 		
 		public bool LazyLoadingEnabled
 		{

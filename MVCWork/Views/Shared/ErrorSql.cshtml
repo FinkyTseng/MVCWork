@@ -1,0 +1,15 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "ErrorSql";
+}
+
+<h1 class="text-danger">ErrorSql.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+<pre>InnerException : @Model.Exception.InnerException</pre>
+<pre>Data : @Model.Exception.Data</pre>
+<pre>Source : @Model.Exception.Source</pre>
+<pre>HelpLink : @Model.Exception.HelpLink</pre>
+<pre>TargetSite : @Model.Exception.TargetSite</pre>
+<pre>Message : @Model.Exception.Message</pre>

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -34,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,11 +44,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NPOI, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -170,12 +194,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ClientAccountInfoController.cs" />
     <Compile Include="Controllers\ClientAnalysisController.cs" />
     <Compile Include="Controllers\ClientContactDataController.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="FilterAttribute\紀錄Action的執行時間Attribute.cs" />
+    <Compile Include="Models\I客戶資料.cs" />
+    <Compile Include="Models\客戶聯絡人批次更新.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -200,8 +228,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EFRepository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFUnitOfWork.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IRepository.EF6.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IUnitOfWork.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RepositoryHelper.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RepositoryIQueryableExtensions.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>DBSourceModel.tt</DependentUpon>
     </Compile>
@@ -220,11 +268,26 @@
     <Compile Include="Models\sysdiagrams.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagramsRepository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\v客戶分析.cs">
       <DependentUpon>DBSourceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\v客戶分析.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\v客戶分析Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶分類.cs">
+      <DependentUpon>DBSourceModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶分類.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶分類Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>DBSourceModel.tt</DependentUpon>
@@ -232,11 +295,17 @@
     <Compile Include="Models\客戶聯絡人.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶聯絡人Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\客戶資料.cs">
       <DependentUpon>DBSourceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶資料.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶資料Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶銀行資訊.cs">
       <DependentUpon>DBSourceModel.tt</DependentUpon>
@@ -244,17 +313,30 @@
     <Compile Include="Models\客戶銀行資訊.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶銀行資訊Repository.cs">
+      <DependentUpon>IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\手機格式驗Attribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="calendar.html" />
+    <Content Include="chart.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
+    <Content Include="file-manager.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="form.html" />
+    <Content Include="gallery.html" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="icon.html" />
+    <Content Include="index.html" />
+    <Content Include="login.html" />
+    <Content Include="messages.html" />
     <Content Include="Models\DBSourceModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBSourceModel.edmx</DependentUpon>
@@ -269,8 +351,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\IRepository.EF6.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IRepository.EF6.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Views\ClientContactData\Index.cshtml" />
+    <Content Include="widgets.html" />
     <EntityDeploy Include="Models\DBSourceModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DBSourceModel.Designer.cs</LastGenOutput>
@@ -278,6 +366,8 @@
     <Content Include="Models\DBSourceModel.edmx.diagram">
       <DependentUpon>DBSourceModel.edmx</DependentUpon>
     </Content>
+    <Content Include="README.md" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -290,6 +380,13 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="submenu.html" />
+    <Content Include="submenu2.html" />
+    <Content Include="submenu3.html" />
+    <Content Include="table.html" />
+    <Content Include="tasks.html" />
+    <Content Include="typography.html" />
+    <Content Include="ui.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -335,16 +432,23 @@
     <Content Include="Views\ClientContactData\Delete.cshtml" />
     <Content Include="Views\ClientContactData\Details.cshtml" />
     <Content Include="Views\ClientContactData\Edit.cshtml" />
-    <Content Include="Views\ClientContactData\Index.cshtml" />
     <Content Include="Views\ClientData\Create.cshtml" />
     <Content Include="Views\ClientData\Delete.cshtml" />
     <Content Include="Views\ClientData\Details.cshtml" />
     <Content Include="Views\ClientData\Edit.cshtml" />
     <Content Include="Views\ClientData\Index.cshtml" />
     <Content Include="Views\ClientAnalysis\Index.cshtml" />
+    <Content Include="Views\ClientContactData\BatchIndex.cshtml" />
+    <Content Include="Views\Shared\ErrorSql.cshtml" />
+    <Content Include="Views\Shared\ErrorField.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="css\" />
+    <Folder Include="font\" />
+    <Folder Include="img\" />
+    <Folder Include="js\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -390,7 +494,6 @@
       <ErrorText>此專案參考這部電腦上所缺少的 NuGet 封裝。請啟用 NuGet 封裝還原，以下載該封裝。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

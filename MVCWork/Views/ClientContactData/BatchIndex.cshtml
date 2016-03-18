@@ -1,0 +1,69 @@
+﻿@model IEnumerable<MVCWork.Models.客戶聯絡人>
+
+@{
+    ViewBag.Title = "客戶聯絡人批次更新";
+}
+
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
+<h2>客戶聯絡人批次更新</h2>
+
+@using (Html.BeginForm())
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.客戶Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.職稱)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.姓名)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.手機)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.電話)
+            </th>
+        </tr>
+
+        @{
+            var data = Model.ToArray();
+        }
+
+        @for(int i = 0; i < data.Length; i++)
+        {
+            <tr>
+                <td>
+                    @Html.HiddenFor(model => data[i].Id)
+                    @Html.DisplayFor(modelItem => data[i].客戶Id)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].職稱)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].姓名)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].Email)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].手機)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].電話)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <button class="btn btn-primary">批次更新</button>
+}

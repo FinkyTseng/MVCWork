@@ -15,9 +15,21 @@ namespace MVCWork.Models
         {
             return this.All().Where(p => p.Id == Id).FirstOrDefault();
         }
+
+        public IQueryable<客戶銀行資訊> Query(string keyword)
+        {
+            var data = this.All();
+
+            if (!String.IsNullOrWhiteSpace(keyword))
+            {
+                data = data.Where(p => p.銀行名稱.Contains(keyword));
+            }
+
+            return data;
+        }
     }
 
-	public  interface I客戶銀行資訊Repository : IRepository<客戶銀行資訊>
+    public  interface I客戶銀行資訊Repository : IRepository<客戶銀行資訊>
 	{
 
 	}

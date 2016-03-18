@@ -3,6 +3,10 @@
     ViewBag.Title = "驗證電話號碼";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("VerifyPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

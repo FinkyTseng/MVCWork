@@ -4,6 +4,10 @@
     ViewBag.Title = "詳細資訊";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>詳細資訊</h2>
 
 <div>
@@ -58,9 +62,19 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.客戶分類.客戶分類名稱)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客戶分類.客戶分類名稱)
+        </dd>
     </dl>
 </div>
 <p>
     @Html.ActionLink("修改", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("回前一頁", "Index")
 </p>
+
+
+@Html.Action("Index", "ClientContactData", new { ClientId = Model.Id })

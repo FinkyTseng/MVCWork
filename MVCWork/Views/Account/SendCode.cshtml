@@ -3,6 +3,10 @@
     ViewBag.Title = "傳送";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {

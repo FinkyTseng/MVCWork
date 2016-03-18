@@ -1,7 +1,22 @@
-﻿@model IEnumerable<MVCWork.Models.客戶聯絡人>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<MVCWork.Models.客戶聯絡人>
 
 @{
     ViewBag.Title = "客戶聯絡人";
+
+    if (IsAjax)
+    {
+        Layout = "";
+    }
+}
+
+@section styles{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+}
+
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
 }
 
 <h2>Index</h2>
@@ -10,12 +25,15 @@
     @Html.ActionLink("新增", "Create")
 </p>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "ClientContactData", FormMethod.Get))
 {
     <table>
         <tr>
             <td>
-                @Html.Editor("sQuery", new { htmlAttributes = new { @class = "form-control" } })
+                姓名：@Html.Editor("sQuery", new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+            <td>
+                職稱：@Html.Editor("sPosition", new { htmlAttributes = new { @class = "form-control" } })
             </td>
             <td>
                 <input type="submit" value="查詢" class="btn btn-default" />
@@ -24,56 +42,76 @@
     </table>
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.職稱)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.姓名)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.手機)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.電話)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model)
+@using (Html.BeginForm("Index", "ClientContactData", FormMethod.Post))
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.職稱)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.姓名)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.手機)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.電話)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.客戶資料.客戶名稱)
-        </td>
-        <td>
-            @Html.ActionLink("修改", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("詳細資訊", "Details", new { id = item.Id }) |
-            @Html.ActionLink("刪除", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-}
+    @Html.Hidden("ClientId", new { ViewBag.ClientId })
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("職稱", "Index", new { sortOrder = ViewBag.職稱SortParm })
+            </th>
+            <th>
+                @Html.ActionLink("姓名", "Index", new { sortOrder = ViewBag.姓名SortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("手機", "Index", new { sortOrder = ViewBag.手機SortParm })
+            </th>
+            <th>
+                @Html.ActionLink("電話", "Index", new { sortOrder = ViewBag.電話SortParm })
+            </th>
+            <th>
+                @Html.ActionLink("客戶名稱", "Index", new { sortOrder = ViewBag.客戶名稱SortParm })
+            </th>
+            <th></th>
+        </tr>
 
-</table>
+        @{
+            var data = Model.ToArray();
+        }
+
+        @for (int i = 0; i < data.Length; i++)
+        {
+            <tr>
+                <td>
+                    @Html.HiddenFor(modelItem => data[i].Id)
+                    @Html.EditorFor(modelItem => data[i].職稱)
+                    <br />
+                    @Html.ValidationMessageFor(model => data[i].職稱, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].姓名)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].Email)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].手機)
+                    <br />
+                    @Html.ValidationMessageFor(model => data[i].手機, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].電話)
+                    <br />
+                   @Html.ValidationMessageFor(model => data[i].電話, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].客戶資料.客戶名稱)
+                </td>
+                <td>
+                    @Html.ActionLink("修改", "Edit", new { id = data[i].Id }) |
+                    @Html.ActionLink("詳細資訊", "Details", new { id = data[i].Id }) |
+                    @Html.ActionLink("刪除", "Delete", new { id = data[i].Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <button class="btn btn-primary">批次更新</button>
+
+            }
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

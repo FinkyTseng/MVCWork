@@ -3,6 +3,10 @@
     ViewBag.Title = "管理";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>

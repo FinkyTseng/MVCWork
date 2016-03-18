@@ -4,6 +4,10 @@
     ViewBag.Title = "刪除客戶資料";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>刪除客戶資料</h2>
 
 <div>
@@ -58,6 +62,13 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.客戶分類.客戶分類名稱)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客戶分類.客戶分類名稱)
+        </dd>
     </dl>
 
     @using (Html.BeginForm()) {

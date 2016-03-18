@@ -7,21 +7,16 @@ using MVCWork.Models;
 
 namespace MVCWork.Controllers
 {
-    public class ClientAnalysisController : Controller
+    public class ClientAnalysisController : BaseController
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        v客戶分析Repository repo = RepositoryHelper.Getv客戶分析Repository();
 
         // GET: ClientAnalysis
         public ActionResult Index(string sQuery)
         {
-            var 客戶分析 = db.v客戶分析.AsQueryable();
+            var 客戶分析 = repo.Query(sQuery);
 
-            if (!String.IsNullOrWhiteSpace(sQuery))
-            {
-                客戶分析 = 客戶分析.Where(p => p.客戶名稱.Contains(sQuery));
-            }
-
-            return View(db.v客戶分析.ToList());
+            return View(客戶分析.ToList());
         }
     }
 }

@@ -1,7 +1,17 @@
-﻿@model IEnumerable<MVCWork.Models.客戶資料>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<MVCWork.Models.客戶資料>
 
 @{
     ViewBag.Title = "客戶資料";
+}
+
+@section styles{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+}
+
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
 }
 
 <h2>客戶資料</h2>
@@ -10,12 +20,15 @@
     @Html.ActionLink("新增", "Create")
 </p>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "ClientData", FormMethod.Get))
 {
     <table>
         <tr>
             <td>
-                @Html.Editor("sQuery", new { htmlAttributes = new { @class = "form-control" } })
+                客戶名稱：@Html.Editor("sQuery", new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+            <td>
+                客戶分類：@Html.DropDownList("客戶分類", null, "請選擇", htmlAttributes: new { @class = "form-control" })
             </td>
             <td>
                 <input type="submit" value="查詢" class="btn btn-default" />
@@ -24,25 +37,29 @@
     </table>
 }
 
+@using (Html.BeginForm()) {
+
+}
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.ActionLink("客戶名稱", "Index", new { sortOrder = ViewBag.客戶名稱SortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.統一編號)
+            @Html.ActionLink("統一編號", "Index", new { sortOrder = ViewBag.統一編號SortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.ActionLink("電話", "Index", new { sortOrder = ViewBag.電話SortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.傳真)
+            @Html.ActionLink("傳真", "Index", new { sortOrder = ViewBag.傳真SortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.地址)
+            @Html.ActionLink("地址", "Index", new { sortOrder = ViewBag.地址SortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
         </th>
         <th></th>
     </tr>
@@ -77,3 +94,5 @@
     }
 
 </table>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

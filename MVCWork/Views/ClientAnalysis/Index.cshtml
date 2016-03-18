@@ -4,6 +4,10 @@
     ViewBag.Title = "客戶資料分析";
 }
 
+@section breadcrumb{
+    <li><a href="#">@ViewBag.Title</a></li>
+}
+
 <h2>客戶資料分析</h2>
 
 @using (Html.BeginForm())
